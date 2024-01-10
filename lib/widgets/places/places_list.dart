@@ -35,7 +35,7 @@ class _PlacesListState extends State<PlacesList> {
             itemCount: places.length,
             itemBuilder: (_, index) {
               final place = places[index];
-              ListTile(
+              return ListTile(
                 title: Text(
                   place.title,
                   style: Theme.of(context).textTheme.titleMedium,
