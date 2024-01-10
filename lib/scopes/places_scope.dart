@@ -13,7 +13,7 @@ class _PlacesModel extends ChangeNotifier {
       id: DateTime.now().toIso8601String(),
       title: title,
     );
-    _places.add(place);
+    _places.insert(0, place);
     notifyListeners();
   }
 }
