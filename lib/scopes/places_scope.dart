@@ -9,7 +9,10 @@ class _PlacesModel extends ChangeNotifier {
   UnmodifiableListView<Place> get places => UnmodifiableListView(_places);
 
   void addPlace({required String title}) {
-    final place = Place(title: title);
+    final place = Place(
+      id: DateTime.now().toIso8601String(),
+      title: title,
+    );
     _places.add(place);
     notifyListeners();
   }
