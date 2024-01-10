@@ -1,4 +1,5 @@
 import 'package:favorite_places/screens/new_place_screen.dart';
+import 'package:favorite_places/widgets/places/places_list.dart';
 import 'package:flutter/material.dart';
 
 class PlacesScreen extends StatefulWidget {
@@ -34,12 +35,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'No places added yet',
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-      ),
+      body: const PlacesList(),
     );
   }
 }
