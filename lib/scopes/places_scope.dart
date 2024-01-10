@@ -1,8 +1,12 @@
+import 'dart:collection';
+
 import 'package:favorite_places/models/place.dart';
 import 'package:flutter/material.dart';
 
 class _PlacesModel extends ChangeNotifier {
   final List<Place> _places = [];
+
+  UnmodifiableListView<Place> get places => UnmodifiableListView(_places);
 
   void addPlace({required String title}) {
     final place = Place(title: title);
