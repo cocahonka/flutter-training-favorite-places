@@ -35,11 +35,11 @@ class FavoritePlacesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Great Places',
-      theme: theme,
-      home: const PlacesScope(
-        child: PlacesScreen(),
+    return PlacesScope(
+      child: MaterialApp(
+        title: 'Great Places',
+        theme: theme,
+        home: const PlacesScreen(),
       ),
     );
   }
