@@ -1,4 +1,5 @@
 import 'package:favorite_places/scopes/places_scope.dart';
+import 'package:favorite_places/widgets/native/image_input.dart';
 import 'package:favorite_places/widgets/places/place_title_field.dart';
 import 'package:flutter/material.dart';
 
@@ -39,8 +40,12 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
             child: Column(
               children: [
                 PlaceTitleField(onSaved: (value) => _enteredTitle = value!),
+                const Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: ImageInput(),
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(top: 16),
                   child: ElevatedButton.icon(
                     onPressed: _saveForm,
                     icon: const Icon(Icons.add),
