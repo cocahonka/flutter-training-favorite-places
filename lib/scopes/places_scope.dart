@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:favorite_places/models/place.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +9,13 @@ class _PlacesModel extends ChangeNotifier {
 
   UnmodifiableListView<Place> get places => UnmodifiableListView(_places);
 
-  void addPlace({required String title}) {
+  void addPlace({
+    required String title,
+    required File image,
+  }) {
     final place = Place(
-      id: DateTime.now().toIso8601String(),
       title: title,
+      image: image,
     );
     _places.insert(0, place);
     notifyListeners();

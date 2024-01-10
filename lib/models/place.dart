@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
 @immutable
 class Place {
-  const Place({required this.id, required this.title});
+  Place({
+    required this.title,
+    required this.image,
+  }) : id = DateTime.now().toIso8601String();
 
   final String id;
   final String title;
+  final File image;
 
   @override
   int get hashCode => Object.hash(id, title);
