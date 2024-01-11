@@ -46,39 +46,40 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Add new Place',
-            style: Theme.of(context).textTheme.titleLarge,
+      appBar: AppBar(
+        title: Text(
+          'Add new Place',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          child: Column(
+            children: [
+              PlaceTitleField(onSaved: (value) => _enteredTitle = value!),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: ImageInput(
+                  saveImage: (value) => _pickedImage = value,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: ElevatedButton.icon(
+                  onPressed: _saveForm,
+                  icon: const Icon(Icons.add),
+                  label: Text(
+                    'Add Place',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        body: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-            child: Column(
-              children: [
-                PlaceTitleField(onSaved: (value) => _enteredTitle = value!),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: ImageInput(
-                    saveImage: (value) => _pickedImage = value,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: ElevatedButton.icon(
-                    onPressed: _saveForm,
-                    icon: const Icon(Icons.add),
-                    label: Text(
-                      'Add Place',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ));
+      ),
+    );
   }
 }
