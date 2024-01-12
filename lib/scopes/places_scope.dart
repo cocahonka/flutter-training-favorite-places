@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 
 import 'package:favorite_places/models/place.dart';
+import 'package:favorite_places/models/place_location.dart';
 import 'package:flutter/material.dart';
 
 class _PlacesModel extends ChangeNotifier {
@@ -12,10 +13,12 @@ class _PlacesModel extends ChangeNotifier {
   void addPlace({
     required String title,
     required File image,
+    required PlaceLocation location,
   }) {
     final place = Place(
       title: title,
       image: image,
+      location: location,
     );
     _places.insert(0, place);
     notifyListeners();

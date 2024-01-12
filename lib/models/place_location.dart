@@ -5,15 +5,15 @@ class PlaceLocation {
   const PlaceLocation({
     required this.latitude,
     required this.longitude,
-    required this.adress,
+    required this.address,
   });
 
   final double latitude;
   final double longitude;
-  final String adress;
+  final String address;
 
   @override
-  int get hashCode => Object.hash(latitude, longitude, adress);
+  int get hashCode => Object.hash(latitude, longitude, address);
 
   @override
   bool operator ==(Object other) {
@@ -22,6 +22,6 @@ class PlaceLocation {
     return other is PlaceLocation &&
         latitude == other.latitude &&
         longitude == other.longitude &&
-        adress == other.adress;
+        address == other.address;
   }
 }
