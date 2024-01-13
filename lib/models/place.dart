@@ -9,7 +9,8 @@ class Place {
     required this.title,
     required this.image,
     required this.location,
-  }) : id = DateTime.now().toIso8601String();
+    String? id,
+  }) : id = id ?? DateTime.now().toIso8601String();
 
   final String id;
   final String title;

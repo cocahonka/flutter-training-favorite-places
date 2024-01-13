@@ -22,6 +22,12 @@ class _PlacesListState extends State<PlacesList> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    PlacesScope.of(context, listen: false).loadPlaces();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final places = PlacesScope.of(context).places;
     return places.isEmpty
