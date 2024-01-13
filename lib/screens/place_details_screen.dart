@@ -81,7 +81,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                )
+                ),
               ],
             ),
           ),
