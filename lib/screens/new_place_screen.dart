@@ -35,7 +35,7 @@ class _NewPlaceScreenState extends State<NewPlaceScreen> {
       return;
     }
 
-    if (isFormValid) return;
+    if (!isFormValid) return;
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(

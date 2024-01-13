@@ -3,9 +3,11 @@
 import 'dart:convert';
 
 import 'package:favorite_places/models/place_location.dart';
+import 'package:favorite_places/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class LocationInput extends StatefulWidget {
   const LocationInput({
@@ -59,14 +61,28 @@ class _LocationInputState extends State<LocationInput> {
     final latitude = locationData.latitude!;
     final longitude = locationData.longitude!;
 
-    final url = Uri.parse(
-      'https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude&api_key=65a15798a52f2454764671zjl340312',
-    );
-    final response = await http.get(url);
+    final address = await _getAddress(latitude, longitude);
 
     setState(() {
       _isLoading = false;
     });
+
+    if (address == null) return;
+
+    _pickedLocation = PlaceLocation(
+      latitude: latitude,
+      longitude: longitude,
+      address: address,
+    );
+
+    widget.saveLocation(_pickedLocation!);
+  }
+
+  Future<String?> _getAddress(double latitude, double longitude) async {
+    final url = Uri.parse(
+      'https://geocode.maps.co/reverse?lat=$latitude&lon=$longitude&api_key=65a15798a52f2454764671zjl340312',
+    );
+    final response = await http.get(url);
 
     if (response.statusCode != 200) {
       if (mounted) {
@@ -75,15 +91,38 @@ class _LocationInputState extends State<LocationInput> {
           const SnackBar(content: Text('Error getting address')),
         );
       }
-      return;
+      return null;
     }
 
     final body = json.decode(response.body);
     final addressMap = body['address'];
     final address = '${addressMap["county"]} ${addressMap["road"]} ${addressMap['house_number'] ?? ""}';
+
+    return address;
+  }
+
+  Future<void> _chooseLocationOnMap() async {
+    final point = await Navigator.of(context).push<Point?>(
+      MaterialPageRoute(builder: (_) => const MapScreen()),
+    );
+
+    if (point == null) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final address = await _getAddress(point.latitude, point.longitude);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (address == null) return;
+
     _pickedLocation = PlaceLocation(
-      latitude: latitude,
-      longitude: longitude,
+      latitude: point.latitude,
+      longitude: point.longitude,
       address: address,
     );
 
@@ -127,7 +166,7 @@ class _LocationInputState extends State<LocationInput> {
               label: const Text('Get Current Location'),
             ),
             TextButton.icon(
-              onPressed: _isLoading ? null : () {},
+              onPressed: _isLoading ? null : _chooseLocationOnMap,
               icon: const Icon(Icons.map),
               label: const Text('Select on Map'),
             ),

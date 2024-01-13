@@ -41,7 +41,9 @@ class _MapScreenState extends State<MapScreen> {
     final hasPermissions = await _initPermissions(service);
     final PlaceLocation location;
 
-    if (hasPermissions) {
+    if (!widget._isSelecting) {
+      location = widget.location;
+    } else if (hasPermissions) {
       final locationData = await service.getLocation();
       location = PlaceLocation(
         latitude: locationData.latitude!,
