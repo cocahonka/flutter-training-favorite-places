@@ -46,6 +46,10 @@ class _PlacesListState extends State<PlacesList> {
                     place.title,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
+                  subtitle: Text(
+                    place.location.address,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   onTap: () => _openPlaceDetailsScreen(place),
                 );
               },
