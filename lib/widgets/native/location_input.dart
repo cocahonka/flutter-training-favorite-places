@@ -23,6 +23,15 @@ class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
   var _isLoading = false;
 
+  String get _getStaticMapUrl {
+    if (_pickedLocation == null) return '';
+
+    final (latitude, longitude) = (_pickedLocation!.latitude, _pickedLocation!.longitude);
+    final url =
+        'https://static-maps.yandex.ru/v1?ll=$longitude,$latitude&size=600,300&z=16&pt=$longitude,$latitude,comma&apikey=868c8c70-f093-45c6-bbc2-7f4f6ccb64e5';
+    return url;
+  }
+
   Future<void> _getCurrentLocation() async {
     final location = Location();
 
@@ -96,11 +105,18 @@ class _LocationInputState extends State<LocationInput> {
           ),
           child: _isLoading
               ? const CircularProgressIndicator()
-              : Text(
-                  _pickedLocation == null ? 'No location chosen' : _pickedLocation!.address,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+              : _pickedLocation != null
+                  ? Image.network(
+                      _getStaticMapUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    )
+                  : Text(
+                      _pickedLocation == null ? 'No location chosen' : _pickedLocation!.address,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
