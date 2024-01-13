@@ -16,9 +16,9 @@ class MapScreen extends StatefulWidget {
   final bool _isSelecting;
 
   static const _defaultLocation = PlaceLocation(
-    latitude: 59.904225,
-    longitude: 29.092264,
-    address: 'Сосновый Бор',
+    latitude: 55.755864,
+    longitude: 37.617698,
+    address: 'Москва',
   );
 
   @override
@@ -27,6 +27,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final mapControllerCompleter = Completer<YandexMapController>();
+  Point? _pickedLocation;
 
   @override
   void initState() {
@@ -82,11 +83,17 @@ class _MapScreenState extends State<MapScreen> {
             latitude: location.latitude,
             longitude: location.longitude,
           ),
-          zoom: 12,
+          zoom: 16,
         ),
       ),
       animation: const MapAnimation(type: MapAnimationType.linear, duration: 1),
     );
+  }
+
+  void _onMapTap(Point point) {
+    setState(() {
+      _pickedLocation = point;
+    });
   }
 
   @override
@@ -98,22 +105,36 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: widget._isSelecting
           ? FloatingActionButton(
               child: const Icon(Icons.save),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop(_pickedLocation);
+              },
             )
           : null,
       body: YandexMap(
         onMapCreated: mapControllerCompleter.complete,
-        mapObjects: [
-          PlacemarkMapObject(
-            mapId: const MapObjectId('Placemark'),
-            point: Point(
-              latitude: widget.location.latitude,
-              longitude: widget.location.longitude,
-            ),
-            opacity: 1,
-            isDraggable: true,
-          ),
-        ],
+        onMapTap: widget._isSelecting ? _onMapTap : null,
+        mapObjects: (widget._isSelecting && _pickedLocation == null)
+            ? const []
+            : [
+                PlacemarkMapObject(
+                  mapId: const MapObjectId('Placemark'),
+                  point: _pickedLocation ??
+                      Point(
+                        latitude: widget.location.latitude,
+                        longitude: widget.location.longitude,
+                      ),
+                  icon: PlacemarkIcon.single(
+                    PlacemarkIconStyle(
+                      image: BitmapDescriptor.fromAssetImage('assets/icons/place.png'),
+                      scale: 1.2,
+                    ),
+                  ),
+                  opacity: 1,
+                  isDraggable: widget._isSelecting,
+                  onDragEnd: (mapObject) => _onMapTap(mapObject.point),
+                  onTap: (_, __) {},
+                ),
+              ],
       ),
     );
   }
